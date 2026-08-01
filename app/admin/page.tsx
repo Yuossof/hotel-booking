@@ -27,8 +27,8 @@ const emptyHotelForm = (): HotelFormValues => ({
   gallery: [],
   imageFiles: [],
   locationUrl: "",
-  checkInTime: "",
-  checkOutTime: "",
+  checkInTimeAr: "", checkInTimeEn: "", checkInTimeTr: "", checkInTimeUr: "",
+  checkOutTimeAr: "", checkOutTimeEn: "", checkOutTimeTr: "", checkOutTimeUr: "",
   roomTypes: [],
   amenities: [],
   featured: false,
@@ -269,8 +269,14 @@ export default function AdminDashboardPage() {
       image: hotel.image,
       gallery: hotel.gallery,
       locationUrl: hotel.locationUrl,
-      checkInTime: hotel.checkInTime,
-      checkOutTime: hotel.checkOutTime,
+      checkInTimeAr: hotel.checkInTime.ar || "",
+      checkInTimeEn: hotel.checkInTime.en || "",
+      checkInTimeTr: hotel.checkInTime.tr || "",
+      checkInTimeUr: hotel.checkInTime.ur || "",
+      checkOutTimeAr: hotel.checkOutTime.ar || "",
+      checkOutTimeEn: hotel.checkOutTime.en || "",
+      checkOutTimeTr: hotel.checkOutTime.tr || "",
+      checkOutTimeUr: hotel.checkOutTime.ur || "",
       roomTypes: hotel.roomTypes,
       amenities: hotel.amenities,
       featured: hotel.featured,
@@ -317,8 +323,14 @@ export default function AdminDashboardPage() {
       fd.set("descriptionTr", f.descriptionTr);
       fd.set("descriptionUr", f.descriptionUr);
       fd.set("locationUrl", f.locationUrl);
-      fd.set("checkInTime", f.checkInTime);
-      fd.set("checkOutTime", f.checkOutTime);
+      fd.set("checkInTimeAr", f.checkInTimeAr);
+      fd.set("checkInTimeEn", f.checkInTimeEn);
+      fd.set("checkInTimeTr", f.checkInTimeTr);
+      fd.set("checkInTimeUr", f.checkInTimeUr);
+      fd.set("checkOutTimeAr", f.checkOutTimeAr);
+      fd.set("checkOutTimeEn", f.checkOutTimeEn);
+      fd.set("checkOutTimeTr", f.checkOutTimeTr);
+      fd.set("checkOutTimeUr", f.checkOutTimeUr);
       fd.set("featured", String(f.featured));
       fd.set("roomTypes", JSON.stringify(f.roomTypes));
       fd.set("amenities", JSON.stringify(f.amenities));
@@ -361,8 +373,14 @@ export default function AdminDashboardPage() {
             roomTypes: f.roomTypes,
             amenities: f.amenities,
             locationUrl: f.locationUrl,
-            checkInTime: f.checkInTime,
-            checkOutTime: f.checkOutTime,
+            checkInTimeAr: f.checkInTimeAr,
+            checkInTimeEn: f.checkInTimeEn,
+            checkInTimeTr: f.checkInTimeTr,
+            checkInTimeUr: f.checkInTimeUr,
+            checkOutTimeAr: f.checkOutTimeAr,
+            checkOutTimeEn: f.checkOutTimeEn,
+            checkOutTimeTr: f.checkOutTimeTr,
+            checkOutTimeUr: f.checkOutTimeUr,
             featured: f.featured,
           }),
         });
@@ -391,8 +409,14 @@ export default function AdminDashboardPage() {
             roomTypes: f.roomTypes,
             amenities: f.amenities,
             locationUrl: f.locationUrl,
-            checkInTime: f.checkInTime,
-            checkOutTime: f.checkOutTime,
+            checkInTimeAr: f.checkInTimeAr,
+            checkInTimeEn: f.checkInTimeEn,
+            checkInTimeTr: f.checkInTimeTr,
+            checkInTimeUr: f.checkInTimeUr,
+            checkOutTimeAr: f.checkOutTimeAr,
+            checkOutTimeEn: f.checkOutTimeEn,
+            checkOutTimeTr: f.checkOutTimeTr,
+            checkOutTimeUr: f.checkOutTimeUr,
             featured: f.featured,
           }),
         });

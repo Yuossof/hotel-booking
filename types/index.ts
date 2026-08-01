@@ -38,8 +38,8 @@ export interface Hotel {
   roomTypes: string[];
   amenities: string[];
   locationUrl: string;
-  checkInTime: string;
-  checkOutTime: string;
+  checkInTime: LocalizedText;
+  checkOutTime: LocalizedText;
   featured: boolean;
   createdAt: string;
   updatedAt: string;
@@ -89,8 +89,14 @@ export interface HotelFormValues {
   gallery: string[];
   imageFiles: File[];
   locationUrl: string;
-  checkInTime: string;
-  checkOutTime: string;
+  checkInTimeAr: string;
+  checkInTimeEn: string;
+  checkInTimeTr: string;
+  checkInTimeUr: string;
+  checkOutTimeAr: string;
+  checkOutTimeEn: string;
+  checkOutTimeTr: string;
+  checkOutTimeUr: string;
   roomTypes: string[];
   amenities: string[];
   featured: boolean;

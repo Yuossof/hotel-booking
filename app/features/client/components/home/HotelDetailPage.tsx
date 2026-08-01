@@ -120,11 +120,11 @@ export default function HotelDetailPage({
         <div style={{ display: "flex", gap: 28, flexWrap: "wrap" }}>
           <div>
             <div style={{ fontSize: 11.5, color: "var(--ink-soft)" }}>{t("detail_checkin")}</div>
-            <div style={{ fontWeight: 700, fontSize: 14 }}>{hotel.checkInTime || "—"}</div>
+            <div style={{ fontWeight: 700, fontSize: 14 }}>{localized(hotel.checkInTime, lang) || "—"}</div>
           </div>
           <div>
             <div style={{ fontSize: 11.5, color: "var(--ink-soft)" }}>{t("detail_checkout")}</div>
-            <div style={{ fontWeight: 700, fontSize: 14 }}>{hotel.checkOutTime || "—"}</div>
+            <div style={{ fontWeight: 700, fontSize: 14 }}>{localized(hotel.checkOutTime, lang) || "—"}</div>
           </div>
         </div>
       </div>

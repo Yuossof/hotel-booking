@@ -305,6 +305,16 @@ export default function HotelForm({ lang, t, values, onChange, cities, errorMess
     set({ [key]: value } as Record<string, unknown> as Partial<HotelFormValues>);
   };
 
+  const handleCheckInChange = (code: string, value: string) => {
+    const key = `checkInTime${code === "ar" ? "Ar" : code === "en" ? "En" : code === "tr" ? "Tr" : "Ur"}` as keyof HotelFormValues;
+    set({ [key]: value } as Record<string, unknown> as Partial<HotelFormValues>);
+  };
+
+  const handleCheckOutChange = (code: string, value: string) => {
+    const key = `checkOutTime${code === "ar" ? "Ar" : code === "en" ? "En" : code === "tr" ? "Tr" : "Ur"}` as keyof HotelFormValues;
+    set({ [key]: value } as Record<string, unknown> as Partial<HotelFormValues>);
+  };
+
   const toggleRoomType = (id: number) => {
     const key = String(id);
     set({ roomTypes: values.roomTypes.includes(key) ? values.roomTypes.filter((k) => k !== key) : [...values.roomTypes, key] });
@@ -387,10 +397,8 @@ export default function HotelForm({ lang, t, values, onChange, cities, errorMess
 
       <Section>
         <input className="bir-input" placeholder={t("location_ph")} value={values.locationUrl} onChange={(e) => set({ locationUrl: e.target.value })} />
-        <div style={{ display: "flex", gap: 10 }}>
-          <input className="bir-input" placeholder={t("checkin_time_ph")} value={values.checkInTime} onChange={(e) => set({ checkInTime: e.target.value })} style={{ flex: 1 }} />
-          <input className="bir-input" placeholder={t("checkout_time_ph")} value={values.checkOutTime} onChange={(e) => set({ checkOutTime: e.target.value })} style={{ flex: 1 }} />
-        </div>
+        <LangBlock label={t("checkin_time_ph")} values={{ ar: values.checkInTimeAr, en: values.checkInTimeEn, tr: values.checkInTimeTr, ur: values.checkInTimeUr }} onChange={handleCheckInChange} />
+        <LangBlock label={t("checkout_time_ph")} values={{ ar: values.checkOutTimeAr, en: values.checkOutTimeEn, tr: values.checkOutTimeTr, ur: values.checkOutTimeUr }} onChange={handleCheckOutChange} />
       </Section>
 
       <Section>

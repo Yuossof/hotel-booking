@@ -55,7 +55,19 @@ export const SEED_HOTELS: Hotel[] = [
     gallery: ["https://picsum.photos/seed/h_seed1b/480/300", "https://picsum.photos/seed/h_seed1c/480/300"],
     roomTypes: ["2", "4"], amenities: ["1", "2", "8", "6"],
     locationUrl: "https://maps.google.com/?q=Makkah+Clock+Royal+Tower",
-    checkInTime: "من الساعة 3:00 عصرًا", checkOutTime: "حتى الساعة 12:00 ظهرًا", featured: true,
+    checkInTime: {
+      ar: "من الساعة 3:00 عصرًا",
+      en: "From 3:00 PM",
+      tr: "15:00'ten itibaren",
+      ur: "دوپہر 3 بجے سے",
+    },
+    checkOutTime: {
+      ar: "حتى الساعة 12:00 ظهرًا",
+      en: "Until 12:00 PM",
+      tr: "12:00'ye kadar",
+      ur: "دوپہر 12 بجے تک",
+    },
+    featured: true,
     createdAt: now, updatedAt: now,
   },
   {
@@ -73,7 +85,19 @@ export const SEED_HOTELS: Hotel[] = [
     gallery: ["https://picsum.photos/seed/h_seed2b/480/300"],
     roomTypes: ["3", "4", "5"], amenities: ["1", "2", "3"],
     locationUrl: "https://maps.google.com/?q=Al+Masjid+an+Nabawi",
-    checkInTime: "من الساعة 2:00 عصرًا", checkOutTime: "حتى الساعة 12:00 ظهرًا", featured: true,
+    checkInTime: {
+      ar: "من الساعة 2:00 عصرًا",
+      en: "From 2:00 PM",
+      tr: "14:00'ten itibaren",
+      ur: "دوپہر 2 بجے سے",
+    },
+    checkOutTime: {
+      ar: "حتى الساعة 12:00 ظهرًا",
+      en: "Until 12:00 PM",
+      tr: "12:00'ye kadar",
+      ur: "دوپہر 12 بجے تک",
+    },
+    featured: true,
     createdAt: now, updatedAt: now,
   },
   {
@@ -91,7 +115,19 @@ export const SEED_HOTELS: Hotel[] = [
     gallery: [],
     roomTypes: ["1", "2"], amenities: ["1", "4", "5", "3"],
     locationUrl: "",
-    checkInTime: "من الساعة 3:00 عصرًا", checkOutTime: "حتى الساعة 1:00 ظهرًا", featured: false,
+    checkInTime: {
+      ar: "من الساعة 3:00 عصرًا",
+      en: "From 3:00 PM",
+      tr: "15:00'ten itibaren",
+      ur: "دوپہر 3 بجے سے",
+    },
+    checkOutTime: {
+      ar: "حتى الساعة 1:00 ظهرًا",
+      en: "Until 1:00 PM",
+      tr: "13:00'e kadar",
+      ur: "دوپہر 1 بجے تک",
+    },
+    featured: false,
     createdAt: now, updatedAt: now,
   },
 ];
