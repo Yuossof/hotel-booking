@@ -52,6 +52,24 @@ function toCardData(h: Hotel, lang: Lang, t: T): CardData {
 export default function HotelGrid({ hotels, featured, lang, t, onSelect, onBook }: HotelGridProps) {
   return (
     <div style={{ maxWidth: 1120, margin: "0 auto", padding: "24px 20px 40px" }}>
+
+
+      {hotels.length === 0 ? (
+        <div style={{ textAlign: "center", padding: 36, color: "var(--ink-soft)", fontSize: 14 }}>
+          {t("no_hotels_city")}
+        </div>
+      ) : (
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(270px, 1fr))", gap: 16 }}>
+          {hotels.map((h) => (
+            <HotelCard
+              key={h.id}
+              hotel={toCardData(h, lang, t)}
+              onOpenDetail={() => onSelect(h)}
+              onQuickBook={() => onBook(h)}
+            />
+          ))}
+        </div>
+      )}
       {featured.length > 0 && (
         <>
           <div className="bir-display" style={{ fontSize: 18, fontWeight: 800, marginBottom: 4 }}>
@@ -69,23 +87,6 @@ export default function HotelGrid({ hotels, featured, lang, t, onSelect, onBook 
             ))}
           </div>
         </>
-      )}
-
-      {hotels.length === 0 ? (
-        <div style={{ textAlign: "center", padding: 36, color: "var(--ink-soft)", fontSize: 14 }}>
-          {t("no_hotels_city")}
-        </div>
-      ) : (
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(270px, 1fr))", gap: 16 }}>
-          {hotels.map((h) => (
-            <HotelCard
-              key={h.id}
-              hotel={toCardData(h, lang, t)}
-              onOpenDetail={() => onSelect(h)}
-              onQuickBook={() => onBook(h)}
-            />
-          ))}
-        </div>
       )}
     </div>
   );
