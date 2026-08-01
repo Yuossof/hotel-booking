@@ -70,6 +70,7 @@ export default function HotelGrid({ hotels, featured, lang, t, onSelect, onBook 
           ))}
         </div>
       )}
+      <div className="my-6"></div>
       {featured.length > 0 && (
         <>
           <div className="bir-display" style={{ fontSize: 18, fontWeight: 800, marginBottom: 4 }}>
