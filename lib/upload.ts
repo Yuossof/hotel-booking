@@ -3,7 +3,7 @@ import { join, extname } from "node:path";
 import { ValidationError } from "./errors";
 
 const UPLOAD_DIR = join(process.cwd(), "public", "uploads");
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
+const MAX_FILE_SIZE = 40 * 1024 * 1024; // 40 MB
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/avif"];
 
 function generateFilename(originalName: string): string {

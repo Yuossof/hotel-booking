@@ -3,7 +3,8 @@ import { hotelsTable } from "@/database/schemas/hotel";
 import { citiesTable } from "@/database/schemas/city";
 import { verifyAuth } from "@/lib/auth";
 import { apiErrorResponse, NotFoundError } from "@/lib/errors";
-import { deleteUploadedFile, saveUploadedFile } from "@/lib/upload";
+import { deleteUploadedFiles } from "@/lib/deleteUploadedFile";
+import { saveUploadedFile } from "@/lib/upload";
 import { hotelUpdateSchema, validate } from "@/lib/validation";
 import { eq } from "drizzle-orm";
 
@@ -169,7 +170,17 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
       }
     }
 
-    const oldImage = data.image && data.image !== existing.image ? existing.image : null;
+    const oldGallery = existing.gallery as string[];
+    const newImage = data.image !== undefined ? (data.image as string) : existing.image;
+    const newGallery = data.gallery !== undefined ? (data.gallery as string[]) : oldGallery;
+
+    const keep = new Set<string>([newImage, ...newGallery]);
+    const removed: string[] = [];
+
+    if (existing.image && !keep.has(existing.image)) removed.push(existing.image);
+    for (const img of oldGallery) {
+      if (!keep.has(img)) removed.push(img);
+    }
 
     await db
       .update(hotelsTable)
@@ -201,8 +212,8 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     const updated = await getHotelJoined(numericId);
     if (!updated) throw new NotFoundError("Hotel");
 
-    if (oldImage) {
-      await deleteUploadedFile(oldImage);
+    if (removed.length > 0) {
+      deleteUploadedFiles(removed);
     }
 
     return Response.json({ hotel: rowToHotel(updated) });
@@ -222,12 +233,8 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
 
     await db.delete(hotelsTable).where(eq(hotelsTable.id, numericId));
 
-    if (existing.image) {
-      await deleteUploadedFile(existing.image);
-    }
-    for (const img of existing.gallery as string[]) {
-      await deleteUploadedFile(img);
-    }
+    const images = [existing.image, ...(existing.gallery as string[])].filter(Boolean) as string[];
+    deleteUploadedFiles(images);
 
     return Response.json({ success: true });
   } catch (error) {
