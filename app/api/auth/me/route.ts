@@ -17,6 +17,6 @@ export async function GET(request: Request) {
       user: { id: user.id, name: user.name, email: user.email },
     });
   } catch (error) {
-    return apiErrorResponse(error);
+    return apiErrorResponse(error, request);
   }
 }

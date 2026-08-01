@@ -13,8 +13,6 @@ export interface HotelCardData {
   badgeClass: string;
   badgeLabel: string;
   fillRatio: number;
-  totalRooms: number;
-  roomsLabel: string;
   ctaLabel: string;
   whatsappHref: string;
 }
@@ -55,10 +53,6 @@ export default function HotelCard({ hotel, onOpenDetail, onQuickBook }: HotelCar
 
         <div style={{ height: 6, background: "var(--bg)", borderRadius: 999, overflow: "hidden" }}>
           <div style={{ height: "100%", width: `${hotel.fillRatio}%`, background: hotel.fillRatio === 0 ? "var(--danger)" : "var(--primary)", borderRadius: 999 }} />
-        </div>
-
-        <div style={{ fontSize: 12.5, color: "var(--ink-soft)" }}>
-          {hotel.roomsLabel}: {hotel.totalRooms}
         </div>
 
         <div>

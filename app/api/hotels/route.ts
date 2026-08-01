@@ -2,7 +2,7 @@ import { db } from "@/database";
 import { hotelsTable } from "@/database/schemas/hotel";
 import { citiesTable } from "@/database/schemas/city";
 import { verifyAuth } from "@/lib/auth";
-import { apiErrorResponse } from "@/lib/errors";
+import { apiErrorResponse, apiErrorMessage } from "@/lib/errors";
 import { hotelSchema, validate } from "@/lib/validation";
 import { saveUploadedFile } from "@/lib/upload";
 import { desc, eq } from "drizzle-orm";
@@ -102,7 +102,7 @@ async function parseHotelForm(request: Request) {
   return validate(hotelSchema, body);
 }
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
     const rows = await db
       .select({
@@ -140,7 +140,7 @@ export async function GET() {
 
     return Response.json({ hotels: rows.map(rowToHotel) });
   } catch (error) {
-    return apiErrorResponse(error);
+    return apiErrorResponse(error, request);
   }
 }
 
@@ -151,7 +151,7 @@ export async function POST(request: Request) {
 
     const [city] = await db.select().from(citiesTable).where(eq(citiesTable.id, data.cityId)).limit(1);
     if (!city) {
-      return Response.json({ error: "City not found" }, { status: 404 });
+      return Response.json({ error: apiErrorMessage("City not found", request) }, { status: 404 });
     }
 
     const [row] = await db
@@ -190,6 +190,6 @@ export async function POST(request: Request) {
 
     return Response.json({ hotel: rowToHotel(joined) }, { status: 201 });
   } catch (error) {
-    return apiErrorResponse(error);
+    return apiErrorResponse(error, request);
   }
 }

@@ -8,7 +8,6 @@ import ImageUploader from "./ImageUploader";
 
 interface OptionItem {
   id: number;
-  key: string;
   name: { ar: string; en: string; tr: string; ur: string };
 }
 
@@ -95,13 +94,12 @@ interface OptionPickerProps {
   selected: string[];
   lang: Lang;
   t: T;
-  onToggle: (key: string) => void;
-  onAdd: (option: { key: string; nameAr: string; nameEn: string; nameTr: string; nameUr: string }) => Promise<void>;
+  onToggle: (id: number) => void;
+  onAdd: (option: { nameAr: string; nameEn: string; nameTr: string; nameUr: string }) => Promise<void>;
 }
 
 function OptionPicker({ label, options, selected, lang, t, onToggle, onAdd }: OptionPickerProps) {
   const [adding, setAdding] = useState(false);
-  const [newKey, setNewKey] = useState("");
   const [newNames, setNewNames] = useState({ ar: "", en: "", tr: "", ur: "" });
   const [saving, setSaving] = useState(false);
 
@@ -113,10 +111,9 @@ function OptionPicker({ label, options, selected, lang, t, onToggle, onAdd }: Op
   ];
 
   const handleAdd = async () => {
-    if (!newKey.trim()) return;
+    if (!newNames.ar.trim() || !newNames.en.trim() || !newNames.tr.trim() || !newNames.ur.trim()) return;
     setSaving(true);
-    await onAdd({ key: newKey.trim(), nameAr: newNames.ar, nameEn: newNames.en, nameTr: newNames.tr, nameUr: newNames.ur });
-    setNewKey("");
+    await onAdd({ nameAr: newNames.ar, nameEn: newNames.en, nameTr: newNames.tr, nameUr: newNames.ur });
     setNewNames({ ar: "", en: "", tr: "", ur: "" });
     setAdding(false);
     setSaving(false);
@@ -128,26 +125,29 @@ function OptionPicker({ label, options, selected, lang, t, onToggle, onAdd }: Op
         {label}
       </label>
       <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-        {options.map((o) => (
-          <button
-            key={o.key}
-            type="button"
-            className="bir-btn"
-            onClick={() => onToggle(o.key)}
-            style={{
-              padding: "7px 14px",
-              borderRadius: 999,
-              fontSize: 12.5,
-              fontWeight: 600,
-              border: "1px solid " + (selected.includes(o.key) ? "var(--primary)" : "var(--line)"),
-              background: selected.includes(o.key) ? "var(--primary)" : "var(--bg)",
-              color: selected.includes(o.key) ? "#fff" : "var(--ink-soft)",
-              transition: "all .15s ease",
-            }}
-          >
-            {o.name[lang] || o.key}
-          </button>
-        ))}
+        {options.map((o) => {
+          const isSelected = selected.includes(String(o.id));
+          return (
+            <button
+              key={o.id}
+              type="button"
+              className="bir-btn"
+              onClick={() => onToggle(o.id)}
+              style={{
+                padding: "7px 14px",
+                borderRadius: 999,
+                fontSize: 12.5,
+                fontWeight: 600,
+                border: "1px solid " + (isSelected ? "var(--primary)" : "var(--line)"),
+                background: isSelected ? "var(--primary)" : "var(--bg)",
+                color: isSelected ? "#fff" : "var(--ink-soft)",
+                transition: "all .15s ease",
+              }}
+            >
+              {o.name[lang] || String(o.id)}
+            </button>
+          );
+        })}
         <button
           type="button"
           className="bir-btn bir-btn-ghost"
@@ -163,7 +163,7 @@ function OptionPicker({ label, options, selected, lang, t, onToggle, onAdd }: Op
             border: "1px dashed var(--line)",
           }}
         >
-          <Plus size={14} /> {t("add_city_btn")}
+          <Plus size={14} /> {t("add_option_btn")}
         </button>
       </div>
 
@@ -179,7 +179,7 @@ function OptionPicker({ label, options, selected, lang, t, onToggle, onAdd }: Op
           }}
         >
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-            <span style={{ fontSize: 12.5, fontWeight: 700 }}>{t("room_types_label")}</span>
+            <span style={{ fontSize: 12.5, fontWeight: 700 }}>{label}</span>
             <button
               type="button"
               className="bir-btn"
@@ -189,13 +189,6 @@ function OptionPicker({ label, options, selected, lang, t, onToggle, onAdd }: Op
               <X size={16} />
             </button>
           </div>
-          <input
-            className="bir-input"
-            placeholder="Key (e.g. suite)"
-            value={newKey}
-            onChange={(e) => setNewKey(e.target.value)}
-            style={{ marginBottom: 8 }}
-          />
           <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 8 }}>
             {langs.map((l) => (
               <div key={l.code} style={{ display: "flex", gap: 8, alignItems: "center" }}>
@@ -241,7 +234,7 @@ function OptionPicker({ label, options, selected, lang, t, onToggle, onAdd }: Op
             disabled={saving}
           >
             {saving && <Loader2 size={14} className="bir-spin" />}
-            {t("add_city_btn")}
+            {t("add_option_btn")}
           </button>
         </div>
       )}
@@ -290,11 +283,11 @@ export default function HotelForm({ lang, t, values, onChange, cities, errorMess
   const [amenities, setAmenities] = useState<OptionItem[]>([]);
 
   const fetchOptions = () => {
-    fetch("/api/room-types")
+    fetch("/api/room-types", { headers: { "x-lang": lang } })
       .then((r) => r.json())
       .then((d) => { if (d.roomTypes) setRoomTypes(d.roomTypes); })
       .catch(() => {});
-    fetch("/api/amenities")
+    fetch("/api/amenities", { headers: { "x-lang": lang } })
       .then((r) => r.json())
       .then((d) => { if (d.amenities) setAmenities(d.amenities); })
       .catch(() => {});
@@ -312,37 +305,41 @@ export default function HotelForm({ lang, t, values, onChange, cities, errorMess
     set({ [key]: value } as Record<string, unknown> as Partial<HotelFormValues>);
   };
 
-  const toggleRoomType = (key: string) =>
+  const toggleRoomType = (id: number) => {
+    const key = String(id);
     set({ roomTypes: values.roomTypes.includes(key) ? values.roomTypes.filter((k) => k !== key) : [...values.roomTypes, key] });
+  };
 
-  const toggleAmenity = (key: string) =>
+  const toggleAmenity = (id: number) => {
+    const key = String(id);
     set({ amenities: values.amenities.includes(key) ? values.amenities.filter((k) => k !== key) : [...values.amenities, key] });
+  };
 
-  const addRoomType = async (opt: { key: string; nameAr: string; nameEn: string; nameTr: string; nameUr: string }) => {
+  const addRoomType = async (opt: { nameAr: string; nameEn: string; nameTr: string; nameUr: string }) => {
     const token = getToken();
     const res = await fetch("/api/room-types", {
       method: "POST",
-      headers: { "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+      headers: { "Content-Type": "application/json", "x-lang": lang, ...(token ? { Authorization: `Bearer ${token}` } : {}) },
       body: JSON.stringify(opt),
     });
     const data = await res.json();
     if (data.roomType) {
       setRoomTypes((prev) => [...prev, data.roomType]);
-      toggleRoomType(data.roomType.key);
+      toggleRoomType(data.roomType.id);
     }
   };
 
-  const addAmenity = async (opt: { key: string; nameAr: string; nameEn: string; nameTr: string; nameUr: string }) => {
+  const addAmenity = async (opt: { nameAr: string; nameEn: string; nameTr: string; nameUr: string }) => {
     const token = getToken();
     const res = await fetch("/api/amenities", {
       method: "POST",
-      headers: { "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+      headers: { "Content-Type": "application/json", "x-lang": lang, ...(token ? { Authorization: `Bearer ${token}` } : {}) },
       body: JSON.stringify(opt),
     });
     const data = await res.json();
     if (data.amenity) {
       setAmenities((prev) => [...prev, data.amenity]);
-      toggleAmenity(data.amenity.key);
+      toggleAmenity(data.amenity.id);
     }
   };
 

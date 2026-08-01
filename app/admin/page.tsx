@@ -55,8 +55,10 @@ function clearToken() {
 
 async function apiFetch(path: string, options?: RequestInit) {
   const token = getToken();
+  const lang = (typeof window !== "undefined" && localStorage.getItem(LANG_KEY)) || "ar";
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
+    "x-lang": lang,
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
     ...(options?.headers as Record<string, string> || {}),
   };
@@ -111,6 +113,10 @@ export default function AdminDashboardPage() {
       setLang(saved);
     }
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem(LANG_KEY, lang);
+  }, [lang]);
 
   // Auto-login on mount
   useEffect(() => {
@@ -311,7 +317,7 @@ export default function AdminDashboardPage() {
 
     try {
       const token = getToken();
-      const headers: Record<string, string> = {};
+      const headers: Record<string, string> = { "x-lang": lang };
       if (token) headers["Authorization"] = `Bearer ${token}`;
 
       if (editingHotelId) {

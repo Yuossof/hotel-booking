@@ -11,11 +11,11 @@ export interface LocalizedText {
 export interface CityInfo extends LocalizedText {}
 
 export interface RoomTypeOption extends LocalizedText {
-  key: string;
+  id: number;
 }
 
 export interface AmenityOption extends LocalizedText {
-  key: string;
+  id: number;
 }
 
 export interface City {

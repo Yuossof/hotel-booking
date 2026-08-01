@@ -1,7 +1,7 @@
 import { db } from "@/database";
 import { usersTable } from "@/database/schemas/user";
 import { hashPassword } from "@/lib/auth";
-import { apiErrorResponse } from "@/lib/errors";
+import { apiErrorResponse, apiErrorMessage } from "@/lib/errors";
 import { registerSchema, validate } from "@/lib/validation";
 import { eq } from "drizzle-orm";
 
@@ -12,7 +12,7 @@ export async function POST(request: Request) {
 
     const existing = await db.select().from(usersTable).where(eq(usersTable.email, data.email)).limit(1);
     if (existing.length > 0) {
-      return Response.json({ error: "Email already registered" }, { status: 409 });
+      return Response.json({ error: apiErrorMessage("Email already registered", request) }, { status: 409 });
     }
 
     const hashedPassword = await hashPassword(data.password);
@@ -23,6 +23,6 @@ export async function POST(request: Request) {
 
     return Response.json({ user }, { status: 201 });
   } catch (error) {
-    return apiErrorResponse(error);
+    return apiErrorResponse(error, request);
   }
 }

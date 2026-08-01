@@ -21,22 +21,22 @@ export const CITY_LABELS: Record<string, CityInfo> = {
 export const CITY_KEYS = Object.keys(CITY_LABELS);
 
 export const ROOM_TYPES: RoomTypeOption[] = [
-  { key: "single", ar: "فردي", en: "Single", tr: "Tek Kişilik", ur: "سنگل" },
-  { key: "double", ar: "ثنائي", en: "Double", tr: "Çift Kişilik", ur: "ڈبل" },
-  { key: "triple", ar: "ثلاثي", en: "Triple", tr: "Üç Kişilik", ur: "ٹرپل" },
-  { key: "quad", ar: "رباعي", en: "Quad", tr: "Dört Kişilik", ur: "کواڈ (چار افراد)" },
-  { key: "quint", ar: "خماسي", en: "Quintuple", tr: "Beş Kişilik", ur: "کوئنٹ (پانچ افراد)" },
+  { id: 1, ar: "فردي", en: "Single", tr: "Tek Kişilik", ur: "سنگل" },
+  { id: 2, ar: "ثنائي", en: "Double", tr: "Çift Kişilik", ur: "ڈبل" },
+  { id: 3, ar: "ثلاثي", en: "Triple", tr: "Üç Kişilik", ur: "ٹرپل" },
+  { id: 4, ar: "رباعي", en: "Quad", tr: "Dört Kişilik", ur: "کواڈ (چار افراد)" },
+  { id: 5, ar: "خماسي", en: "Quintuple", tr: "Beş Kişilik", ur: "کوئنٹ (پانچ افراد)" },
 ];
 
 export const AMENITIES: AmenityOption[] = [
-  { key: "wifi", ar: "واي فاي مجاني", en: "Free Wi-Fi", tr: "Ücretsiz Wi-Fi", ur: "مفت وائی فائی" },
-  { key: "breakfast", ar: "إفطار مجاني", en: "Free breakfast", tr: "Ücretsiz kahvaltı", ur: "مفت ناشتہ" },
-  { key: "parking", ar: "موقف سيارات", en: "Parking", tr: "Otopark", ur: "پارکنگ" },
-  { key: "pool", ar: "مسبح", en: "Pool", tr: "Havuz", ur: "سوئمنگ پول" },
-  { key: "gym", ar: "صالة رياضية", en: "Gym", tr: "Spor salonu", ur: "جم" },
-  { key: "ac", ar: "تكييف", en: "Air conditioning", tr: "Klima", ur: "ایئر کنڈیشنگ" },
-  { key: "roomService", ar: "خدمة الغرف", en: "Room service", tr: "Oda servisi", ur: "روم سروس" },
-  { key: "shuttle", ar: "مواصلات مجانية للحرم", en: "Free shuttle to Haram", tr: "Harem'e ücretsiz servis", ur: "حرم کے لیے مفت شٹل" },
+  { id: 1, ar: "واي فاي مجاني", en: "Free Wi-Fi", tr: "Ücretsiz Wi-Fi", ur: "مفت وائی فائی" },
+  { id: 2, ar: "إفطار مجاني", en: "Free breakfast", tr: "Ücretsiz kahvaltı", ur: "مفت ناشتہ" },
+  { id: 3, ar: "موقف سيارات", en: "Parking", tr: "Otopark", ur: "پارکنگ" },
+  { id: 4, ar: "مسبح", en: "Pool", tr: "Havuz", ur: "سوئمنگ پول" },
+  { id: 5, ar: "صالة رياضية", en: "Gym", tr: "Spor salonu", ur: "جم" },
+  { id: 6, ar: "تكييف", en: "Air conditioning", tr: "Klima", ur: "ایئر کنڈیشنگ" },
+  { id: 7, ar: "خدمة الغرف", en: "Room service", tr: "Oda servisi", ur: "روم سروس" },
+  { id: 8, ar: "مواصلات مجانية للحرم", en: "Free shuttle to Haram", tr: "Harem'e ücretsiz servis", ur: "حرم کے لیے مفت شٹل" },
 ];
 
 export const SEED_HOTELS: Hotel[] = [
@@ -53,7 +53,7 @@ export const SEED_HOTELS: Hotel[] = [
     },
     image: "https://picsum.photos/seed/h_seed1/480/300",
     gallery: ["https://picsum.photos/seed/h_seed1b/480/300", "https://picsum.photos/seed/h_seed1c/480/300"],
-    roomTypes: ["double", "quad"], amenities: ["wifi", "breakfast", "shuttle", "ac"],
+    roomTypes: ["2", "4"], amenities: ["1", "2", "8", "6"],
     locationUrl: "https://maps.google.com/?q=Makkah+Clock+Royal+Tower",
     checkInTime: "من الساعة 3:00 عصرًا", checkOutTime: "حتى الساعة 12:00 ظهرًا", featured: true,
     createdAt: now, updatedAt: now,
@@ -71,7 +71,7 @@ export const SEED_HOTELS: Hotel[] = [
     },
     image: "https://picsum.photos/seed/h_seed2/480/300",
     gallery: ["https://picsum.photos/seed/h_seed2b/480/300"],
-    roomTypes: ["triple", "quad", "quint"], amenities: ["wifi", "breakfast", "parking"],
+    roomTypes: ["3", "4", "5"], amenities: ["1", "2", "3"],
     locationUrl: "https://maps.google.com/?q=Al+Masjid+an+Nabawi",
     checkInTime: "من الساعة 2:00 عصرًا", checkOutTime: "حتى الساعة 12:00 ظهرًا", featured: true,
     createdAt: now, updatedAt: now,
@@ -89,7 +89,7 @@ export const SEED_HOTELS: Hotel[] = [
     },
     image: "https://picsum.photos/seed/h_seed3/480/300",
     gallery: [],
-    roomTypes: ["single", "double"], amenities: ["wifi", "pool", "gym", "parking"],
+    roomTypes: ["1", "2"], amenities: ["1", "4", "5", "3"],
     locationUrl: "",
     checkInTime: "من الساعة 3:00 عصرًا", checkOutTime: "حتى الساعة 1:00 ظهرًا", featured: false,
     createdAt: now, updatedAt: now,

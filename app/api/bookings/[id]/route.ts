@@ -60,6 +60,6 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
       },
     });
   } catch (error) {
-    return apiErrorResponse(error);
+    return apiErrorResponse(error, request);
   }
 }

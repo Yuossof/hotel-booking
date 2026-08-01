@@ -3,7 +3,7 @@ import { bookingsTable } from "@/database/schemas/booking";
 import { hotelsTable } from "@/database/schemas/hotel";
 import { verifyAuth } from "@/lib/auth";
 import { sendBookingNotification } from "@/lib/email";
-import { apiErrorResponse } from "@/lib/errors";
+import { apiErrorResponse, apiErrorMessage } from "@/lib/errors";
 import { bookingSchema, validate } from "@/lib/validation";
 import { eq, desc } from "drizzle-orm";
 
@@ -47,7 +47,7 @@ export async function GET(request: Request) {
       })),
     });
   } catch (error) {
-    return apiErrorResponse(error);
+    return apiErrorResponse(error, request);
   }
 }
 
@@ -58,7 +58,7 @@ export async function POST(request: Request) {
 
     const [hotel] = await db.select().from(hotelsTable).where(eq(hotelsTable.id, data.hotelId)).limit(1);
     if (!hotel) {
-      return Response.json({ error: "Hotel not found" }, { status: 404 });
+      return Response.json({ error: apiErrorMessage("Hotel not found", request) }, { status: 404 });
     }
 
     const [row] = await db
@@ -103,6 +103,6 @@ export async function POST(request: Request) {
       { status: 201 },
     );
   } catch (error) {
-    return apiErrorResponse(error);
+    return apiErrorResponse(error, request);
   }
 }

@@ -24,10 +24,6 @@ interface CardData {
   badgeClass: string;
   badgeLabel: string;
   fillRatio: number;
-  totalRooms: number;
-  availableRooms: number;
-  roomsLabel: string;
-  roomsAvailableLabel: string;
   ctaLabel: string;
   whatsappHref: string;
 }
@@ -48,10 +44,6 @@ function toCardData(h: Hotel, lang: Lang, t: T): CardData {
     badgeClass: isFull ? "bir-badge-danger" : h.featured ? "bir-badge-primary" : "bir-badge-low",
     badgeLabel: isFull ? t("badge_full") : h.featured ? t("most_requested_title") : "",
     fillRatio: pct,
-    totalRooms: h.totalRooms,
-    availableRooms: h.availableRooms,
-    roomsLabel: t("rooms_label"),
-    roomsAvailableLabel: t("rooms_available_label"),
     ctaLabel: isFull ? t("badge_full") : t("book_now"),
     whatsappHref: `https://wa.me/?text=${encodeURIComponent(t("inquire") + " " + hotelName)}`,
   };

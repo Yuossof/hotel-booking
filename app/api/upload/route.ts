@@ -26,6 +26,6 @@ export async function POST(request: Request) {
 
     throw new ValidationError("No file provided. Use 'file' (single) or 'files' (multiple) field.");
   } catch (error) {
-    return apiErrorResponse(error);
+    return apiErrorResponse(error, request);
   }
 }

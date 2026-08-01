@@ -21,7 +21,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
     if (!row) throw new NotFoundError("City");
     return Response.json({ city: rowToCity(row) });
   } catch (error) {
-    return apiErrorResponse(error);
+    return apiErrorResponse(error, _request);
   }
 }
 
@@ -51,7 +51,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
 
     return Response.json({ city: rowToCity(row) });
   } catch (error) {
-    return apiErrorResponse(error);
+    return apiErrorResponse(error, request);
   }
 }
 
@@ -67,6 +67,6 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
 
     return Response.json({ success: true });
   } catch (error) {
-    return apiErrorResponse(error);
+    return apiErrorResponse(error, request);
   }
 }

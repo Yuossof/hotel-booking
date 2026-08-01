@@ -1,25 +1,20 @@
 import { BedDouble } from "lucide-react";
 import { T } from "@/types";
+import Image from "next/image";
 
 export default function BrandMark({ t }: { t: T }) {
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-      <div
+    <div style={{ display: "flex", alignItems: "center", gap: 8 }} className="">
+      <Image
+        src="/logo/logo.png"
+        width={60}
+        height={60}
+        alt="tawaf"
         style={{
-          width: 34,
-          height: 34,
-          borderRadius: 9,
-          background: "var(--primary)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+          transform: "scale(1.9)",
+          transformOrigin: "center",
         }}
-      >
-        <BedDouble size={18} color="#fff" />
-      </div>
-      <span className="bir-display" style={{ fontSize: 18, fontWeight: 800 }}>
-        {t("brand")}
-      </span>
+      />
     </div>
   );
 }

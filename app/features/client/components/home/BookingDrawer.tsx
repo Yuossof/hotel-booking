@@ -28,18 +28,18 @@ export default function BookingDrawer({ hotel, lang, t, onClose }: BookingDrawer
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [roomTypeOptions, setRoomTypeOptions] = useState<{ key: string; name: { ar: string; en: string; tr: string; ur: string } }[]>([]);
+  const [roomTypeOptions, setRoomTypeOptions] = useState<{ id: number; name: { ar: string; en: string; tr: string; ur: string } }[]>([]);
 
   const set = (patch: Partial<BookingFormValues>) => setForm((prev) => ({ ...prev, ...patch }));
 
   const hotelName = localized(hotel.name, lang);
 
   useEffect(() => {
-    fetch("/api/room-types")
+    fetch("/api/room-types", { headers: { "x-lang": lang } })
       .then((r) => r.json())
       .then((d) => { if (d.roomTypes) setRoomTypeOptions(d.roomTypes); })
       .catch(() => {});
-  }, []);
+  }, [lang]);
 
   useEffect(() => {
     if (success) {
@@ -67,7 +67,7 @@ export default function BookingDrawer({ hotel, lang, t, onClose }: BookingDrawer
     try {
       const res = await fetch("/api/bookings", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "x-lang": lang },
         body: JSON.stringify({
           hotelId: hotel.id,
           guestName: guestName.trim(),
@@ -205,8 +205,9 @@ export default function BookingDrawer({ hotel, lang, t, onClose }: BookingDrawer
                     <select className="bir-input" style={inputStyle} value={form.roomType} onChange={(e) => set({ roomType: e.target.value })}>
                       <option value="">{t("room_type_any")}</option>
                       {hotel.roomTypes.map((k) => {
-                        const fromApi = roomTypeOptions.find((r) => r.key === k);
-                        const fromStatic = ROOM_TYPES.find((r) => r.key === k);
+                        const numeric = Number(k);
+                        const fromApi = roomTypeOptions.find((r) => r.id === numeric);
+                        const fromStatic = ROOM_TYPES.find((r) => r.id === numeric);
                         const label = fromApi ? (fromApi.name[lang] || fromApi.name.en) : fromStatic ? (fromStatic[lang] || fromStatic.en) : k;
                         return (
                           <option key={k} value={k}>{label}</option>

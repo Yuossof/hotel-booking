@@ -16,14 +16,14 @@ interface BookingsListProps {
 }
 
 export default function BookingsList({ bookings, lang, t, onConfirm, onDecline, loading }: BookingsListProps) {
-  const [roomTypeOptions, setRoomTypeOptions] = useState<{ key: string; name: { ar: string; en: string; tr: string; ur: string } }[]>([]);
+  const [roomTypeOptions, setRoomTypeOptions] = useState<{ id: number; name: { ar: string; en: string; tr: string; ur: string } }[]>([]);
 
   useEffect(() => {
-    fetch("/api/room-types")
+    fetch("/api/room-types", { headers: { "x-lang": lang } })
       .then((r) => r.json())
       .then((d) => { if (d.roomTypes) setRoomTypeOptions(d.roomTypes); })
       .catch(() => {});
-  }, []);
+  }, [lang]);
 
   if (loading) {
     return (
@@ -69,8 +69,9 @@ export default function BookingsList({ bookings, lang, t, onConfirm, onDecline, 
                   <Phone size={12} /> {b.guestPhone}
                 </span>
                 {b.roomType && (() => {
-                  const fromApi = roomTypeOptions.find((r) => r.key === b.roomType);
-                  const fromStatic = ROOM_TYPES.find((r) => r.key === b.roomType);
+                  const numeric = Number(b.roomType);
+                  const fromApi = roomTypeOptions.find((r) => r.id === numeric);
+                  const fromStatic = ROOM_TYPES.find((r) => r.id === numeric);
                   return <span>{fromApi ? (fromApi.name[lang] || fromApi.name.en) : fromStatic ? (fromStatic[lang] || fromStatic.en) : b.roomType}</span>;
                 })()}
               </div>

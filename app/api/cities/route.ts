@@ -42,6 +42,6 @@ export async function POST(request: Request) {
 
     return Response.json({ city: rowToCity(row) }, { status: 201 });
   } catch (error) {
-    return apiErrorResponse(error);
+    return apiErrorResponse(error, request);
   }
 }

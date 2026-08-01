@@ -2,7 +2,7 @@ import { db } from "@/database";
 import { hotelsTable } from "@/database/schemas/hotel";
 import { citiesTable } from "@/database/schemas/city";
 import { verifyAuth } from "@/lib/auth";
-import { apiErrorResponse, NotFoundError } from "@/lib/errors";
+import { apiErrorResponse, apiErrorMessage, NotFoundError } from "@/lib/errors";
 import { deleteUploadedFiles } from "@/lib/deleteUploadedFile";
 import { saveUploadedFile } from "@/lib/upload";
 import { hotelUpdateSchema, validate } from "@/lib/validation";
@@ -148,7 +148,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
     if (!row) throw new NotFoundError("Hotel");
     return Response.json({ hotel: rowToHotel(row) });
   } catch (error) {
-    return apiErrorResponse(error);
+    return apiErrorResponse(error, _request);
   }
 }
 
@@ -166,7 +166,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     if (data.cityId !== undefined) {
       const [city] = await db.select().from(citiesTable).where(eq(citiesTable.id, data.cityId as number)).limit(1);
       if (!city) {
-        return Response.json({ error: "City not found" }, { status: 404 });
+        return Response.json({ error: apiErrorMessage("City not found", request) }, { status: 404 });
       }
     }
 
@@ -218,7 +218,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
 
     return Response.json({ hotel: rowToHotel(updated) });
   } catch (error) {
-    return apiErrorResponse(error);
+    return apiErrorResponse(error, request);
   }
 }
 
@@ -238,6 +238,6 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
 
     return Response.json({ success: true });
   } catch (error) {
-    return apiErrorResponse(error);
+    return apiErrorResponse(error, request);
   }
 }

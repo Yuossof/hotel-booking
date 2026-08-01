@@ -19,19 +19,19 @@ export default function HotelDetailPage({
   onBack: () => void;
   onBook: (hotel: Hotel) => void;
 }) {
-  const [roomOptions, setRoomOptions] = useState<{ key: string; name: { ar: string; en: string; tr: string; ur: string } }[]>([]);
-  const [amenityOptions, setAmenityOptions] = useState<{ key: string; name: { ar: string; en: string; tr: string; ur: string } }[]>([]);
+  const [roomOptions, setRoomOptions] = useState<{ id: number; name: { ar: string; en: string; tr: string; ur: string } }[]>([]);
+  const [amenityOptions, setAmenityOptions] = useState<{ id: number; name: { ar: string; en: string; tr: string; ur: string } }[]>([]);
 
   useEffect(() => {
-    fetch("/api/room-types")
+    fetch("/api/room-types", { headers: { "x-lang": lang } })
       .then((r) => r.json())
       .then((d) => { if (d.roomTypes) setRoomOptions(d.roomTypes); })
       .catch(() => {});
-    fetch("/api/amenities")
+    fetch("/api/amenities", { headers: { "x-lang": lang } })
       .then((r) => r.json())
       .then((d) => { if (d.amenities) setAmenityOptions(d.amenities); })
       .catch(() => {});
-  }, []);
+  }, [lang]);
 
   const gallery = hotel.gallery && hotel.gallery.length > 0 ? hotel.gallery : [hotel.image];
   const [imgIndex, setImgIndex] = useState(0);
@@ -43,17 +43,16 @@ export default function HotelDetailPage({
   const cityLabel = localized(hotel.city.name, lang);
   const priceLabel = formatPrice(hotel.price, lang);
   const perNightLabel = t("per_night");
-  const labelFor = (key: string, options: { key: string; name: { ar: string; en: string; tr: string; ur: string } }[], fallbacks: { key: string; ar: string; en: string; tr: string; ur: string }[]) => {
-    const fromApi = options.find((o) => o.key === key);
-    if (fromApi) return fromApi.name[lang] || fromApi.name.en || key;
-    const fromStatic = fallbacks.find((o) => o.key === key);
-    if (fromStatic) return fromStatic[lang] || fromStatic.en || key;
-    return key;
+  const labelFor = (id: string, options: { id: number; name: { ar: string; en: string; tr: string; ur: string } }[], fallbacks: { id: number; ar: string; en: string; tr: string; ur: string }[]) => {
+    const numeric = Number(id);
+    const fromApi = options.find((o) => o.id === numeric);
+    if (fromApi) return fromApi.name[lang] || fromApi.name.en || id;
+    const fromStatic = fallbacks.find((o) => o.id === numeric);
+    if (fromStatic) return fromStatic[lang] || fromStatic.en || id;
+    return id;
   };
   const roomTypeLabels = hotel.roomTypes.map((rt) => labelFor(rt, roomOptions, ROOM_TYPES));
   const amenityLabels = hotel.amenities.map((a) => labelFor(a, amenityOptions, AMENITIES));
-  const roomsLabel = t("rooms_label");
-  const roomsAvailableLabel = t("rooms_available_label");
   const ctaLabel = t("book_now");
   const whatsappHref = `https://wa.me/?text=${encodeURIComponent(t("inquire") + " " + name)}`;
 
@@ -101,17 +100,6 @@ export default function HotelDetailPage({
       </div>
 
       <p style={{ fontSize: 14, color: "var(--ink-soft)", lineHeight: 1.8, marginTop: 14 }}>{description}</p>
-
-      <div style={{ display: "flex", gap: 24, flexWrap: "wrap", marginTop: 18 }}>
-        <div>
-          <div style={{ fontSize: 11.5, color: "var(--ink-soft)" }}>{roomsLabel}</div>
-          <div style={{ fontWeight: 800, fontSize: 16 }}>{hotel.totalRooms}</div>
-        </div>
-        <div>
-          <div style={{ fontSize: 11.5, color: "var(--ink-soft)" }}>{roomsAvailableLabel}</div>
-          <div style={{ fontWeight: 800, fontSize: 16, color: hotel.availableRooms > 0 ? "var(--primary-dark)" : "var(--danger)" }}>{hotel.availableRooms}</div>
-        </div>
-      </div>
 
       {roomTypeLabels.length > 0 && (
         <div style={{ marginTop: 22 }}>

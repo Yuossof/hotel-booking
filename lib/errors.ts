@@ -1,3 +1,5 @@
+import { langFromRequest, localizeError } from "./serverErrors";
+
 export class AppError extends Error {
   constructor(
     message: string,
@@ -30,11 +32,13 @@ export class ValidationError extends AppError {
   }
 }
 
-export function apiErrorResponse(error: unknown) {
+export function apiErrorResponse(error: unknown, request?: Request | null) {
+  const lang = langFromRequest(request);
+
   if (error instanceof AppError) {
     return Response.json(
       {
-        error: error.message,
+        error: localizeError(error.message, lang),
         ...(error.details !== undefined ? { details: error.details } : {}),
       },
       { status: error.statusCode },
@@ -42,5 +46,9 @@ export function apiErrorResponse(error: unknown) {
   }
 
   console.error("Unhandled error:", error);
-  return Response.json({ error: "Internal server error" }, { status: 500 });
+  return Response.json({ error: localizeError("Internal server error", lang) }, { status: 500 });
+}
+
+export function apiErrorMessage(message: string, request?: Request | null) {
+  return localizeError(message, langFromRequest(request));
 }
