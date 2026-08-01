@@ -47,7 +47,7 @@ export async function POST(request: Request) {
 
     return Response.json({
       token,
-      user: {
+      user: {                                                                                                                                                
         id: user.id,
         name: user.name,
         email: user.email,
