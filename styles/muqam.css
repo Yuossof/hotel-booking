@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap');
+
+.bir-app {
+  --bg: #FAF6EF;
+  --surface: #FFFFFF;
+  --ink: #1C2620;
+  --ink-soft: #5B6560;
+  --primary: #0E5C43;
+  --primary-dark: #0A4633;
+  --primary-tint: #E4EFE9;
+  --gold: #B98D3E;
+  --gold-tint: #F6ECD9;
+  --line: #E7E1D3;
+  --danger: #B54A3F;
+  --danger-tint: #F7E9E6;
+  font-family: 'IBM Plex Sans Arabic', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+}
+
+.bir-app .bir-display { font-family: 'Cairo', sans-serif; }
+.bir-app *:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+.bir-btn {
+  font-family: 'IBM Plex Sans Arabic', sans-serif;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+}
+.bir-btn:active { transform: scale(0.97); }
+.bir-btn-primary { background: var(--primary); color: #fff; }
+.bir-btn-primary:hover { background: var(--primary-dark); }
+.bir-btn-primary:disabled { background: #B9C4BF; cursor: not-allowed; }
+.bir-btn-ghost { background: transparent; color: var(--primary); border: 1px solid var(--line); }
+.bir-btn-ghost:hover { background: var(--primary-tint); }
+.bir-btn-danger { background: var(--danger-tint); color: var(--danger); }
+.bir-btn-danger:hover { background: #F0D6D0; }
+
+.bir-card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; }
+
+.bir-input {
+  font-family: 'IBM Plex Sans Arabic', sans-serif;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 14px;
+  color: var(--ink);
+  width: 100%;
+}
+.bir-input:focus { border-color: var(--primary); }
+.bir-input::placeholder { color: #A6A198; }
+
+.bir-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+.bir-badge-available { background: var(--primary-tint); color: var(--primary-dark); }
+.bir-badge-low { background: var(--gold-tint); color: #8A6A26; }
+.bir-badge-full { background: var(--danger-tint); color: var(--danger); }
+
+.bir-pulse-dot { width: 8px; height: 8px; border-radius: 999px; background: #E9573F; animation: bir-pulse 1.8s infinite; }
+@keyframes bir-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(233,87,63,0.5); }
+  70% { box-shadow: 0 0 0 8px rgba(233,87,63,0); }
+  100% { box-shadow: 0 0 0 0 rgba(233,87,63,0); }
+}
+
+.bir-marquee-track { display: flex; gap: 12px; width: max-content; animation: bir-marquee 4s linear infinite; }
+@keyframes bir-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bir-marquee-track { animation: none; }
+  .bir-pulse-dot { animation: none; }
+}
+
+.bir-slideover { animation: bir-slide-in 0.25s ease-out; }
+@keyframes bir-slide-in {
+  from { transform: translateX(-24px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.bir-toast { animation: bir-toast-in 0.1s ease-out; }
+@keyframes bir-toast-in {
+  from { transform: translateY(-12px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.bir-clickable { cursor: pointer; }
+
+.bir-spin { animation: bir-spin 0.8s linear infinite; }
+@keyframes bir-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
