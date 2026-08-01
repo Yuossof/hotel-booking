@@ -59,7 +59,7 @@ export default function HotelGrid({ hotels, featured, lang, t, onSelect, onBook 
           {t("no_hotels_city")}
         </div>
       ) : (
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(270px, 1fr))", gap: 16 }}>
+        <div  style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(270px, 1fr))", gap: 16, marginBottom: "30px" }}>
           {hotels.map((h) => (
             <HotelCard
               key={h.id}
@@ -70,7 +70,6 @@ export default function HotelGrid({ hotels, featured, lang, t, onSelect, onBook 
           ))}
         </div>
       )}
-      <div className="my-6"></div>
       {featured.length > 0 && (
         <>
           <div className="bir-display" style={{ fontSize: 18, fontWeight: 800, marginBottom: 4 }}>
