@@ -211,11 +211,18 @@ function OptionSection({
                   borderRadius: 10,
                 }}
               >
-                <div style={{ flex: 1, minWidth: 0, fontSize: 13 }}>
+                <div
+                  style={{ flex: 1, minWidth: 0, fontSize: 13 }}
+                  title={`AR: ${o.name.ar || "—"} · EN: ${o.name.en || "—"} · TR: ${o.name.tr || "—"} · UR: ${o.name.ur || "—"}`}
+                >
                   {o.name[lang] || `ID ${o.id}`}
-                  <span style={{ fontSize: 11, color: "var(--ink-soft)", marginInlineStart: 8 }}>
-                    AR: {o.name.ar || "—"} · EN: {o.name.en || "—"} · TR: {o.name.tr || "—"} · UR: {o.name.ur || "—"}
-                  </span>
+                  {LANGS.filter((l) => l.code !== lang && !o.name[l.code]).length > 0 && (
+                    <span style={{ fontSize: 11, color: "var(--ink-soft)", marginInlineStart: 8 }}>
+                      {LANGS.filter((l) => l.code !== lang && !o.name[l.code])
+                        .map((l) => l.label)
+                        .join(", ")}
+                    </span>
+                  )}
                 </div>
                 <button
                   type="button"

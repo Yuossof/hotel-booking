@@ -55,16 +55,14 @@ export default function HotelCard({
           textAlign: "inherit",
         }}
       >
-        <Image
+        <img
           src={hotel.image}
           alt={hotel.name}
-          fill
+          className="absolute inset-0 w-full h-full object-cover"
           sizes="(max-width: 768px) 100vw, 300px"
-          style={{
-            objectFit: "cover",
-          }}
+          loading="lazy"
+          decoding="async"
         />
-
         <span
           className={`bir-badge ${hotel.badgeClass}`}
           style={{
