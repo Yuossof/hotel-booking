@@ -26,7 +26,9 @@ export default function SiteHeader({ lang, onLangChange, t }: SiteHeaderProps) {
           flexWrap: "wrap",
         }}
       >
-        <BrandMark t={t} />
+        <Link href="/">
+          <BrandMark t={t} />
+        </Link>
         <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
           <Link
             href="/admin"
