@@ -51,14 +51,14 @@ function toCardData(h: Hotel, lang: Lang, t: T): CardData {
 
 export default function HotelGrid({ hotels, featured, lang, t, onSelect, onBook }: HotelGridProps) {
   return (
-    <div style={{ maxWidth: 1080, margin: "0 auto", padding: "24px 20px 40px" }}>
+    <div style={{ maxWidth: 1150, margin: "0 auto", padding: "24px 20px 40px" }}>
       {featured.length > 0 && (
         <>
           <div className="bir-display" style={{ fontSize: 18, fontWeight: 800, marginBottom: 4 }}>
             {t("most_requested_title")}
           </div>
           <p style={{ fontSize: 13, color: "var(--ink-soft)", marginBottom: 14 }}>{t("most_requested_sub")}</p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: 16, marginBottom: 36 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 16, marginBottom: 36 }}>
             {featured.map((h) => (
               <HotelCard
                 key={h.id}
