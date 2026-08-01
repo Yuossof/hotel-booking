@@ -72,7 +72,7 @@
   100% { box-shadow: 0 0 0 0 rgba(233,87,63,0); }
 }
 
-.bir-marquee-track { display: flex; gap: 12px; width: max-content; animation: bir-marquee 4s linear infinite; }
+.bir-marquee-track { display: flex; gap: 12px; width: max-content; animation: bir-marquee 5s linear infinite; }
 @keyframes bir-marquee {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }

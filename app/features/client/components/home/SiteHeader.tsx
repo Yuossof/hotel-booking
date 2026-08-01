@@ -30,13 +30,6 @@ export default function SiteHeader({ lang, onLangChange, t }: SiteHeaderProps) {
           <BrandMark t={t} />
         </Link>
         <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
-          <Link
-            href="/admin"
-            className="bir-btn bir-btn-ghost"
-            style={{ padding: "8px 16px", borderRadius: 999, fontSize: 13, textDecoration: "none" }}
-          >
-            {t("nav_owner")}
-          </Link>
           <LangSwitcher lang={lang} onChange={onLangChange} />
         </div>
       </div>

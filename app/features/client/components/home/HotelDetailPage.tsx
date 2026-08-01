@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Hotel, Lang, T } from "@/types";
 import { ROOM_TYPES, AMENITIES } from "@/lib/constants";
-import { formatPrice, localized } from "@/lib/display";
+import { formatPrice, localized, optionLabel } from "@/lib/display";
 import { ChevronLeft, ChevronRight, CheckCircle2, MapPin, MessageCircle, ArrowLeft } from "lucide-react";
 
 export default function HotelDetailPage({
@@ -43,16 +43,8 @@ export default function HotelDetailPage({
   const cityLabel = localized(hotel.city.name, lang);
   const priceLabel = formatPrice(hotel.price, lang);
   const perNightLabel = t("per_night");
-  const labelFor = (id: string, options: { id: number; name: { ar: string; en: string; tr: string; ur: string } }[], fallbacks: { id: number; ar: string; en: string; tr: string; ur: string }[]) => {
-    const numeric = Number(id);
-    const fromApi = options.find((o) => o.id === numeric);
-    if (fromApi) return fromApi.name[lang] || fromApi.name.en || id;
-    const fromStatic = fallbacks.find((o) => o.id === numeric);
-    if (fromStatic) return fromStatic[lang] || fromStatic.en || id;
-    return id;
-  };
-  const roomTypeLabels = hotel.roomTypes.map((rt) => labelFor(rt, roomOptions, ROOM_TYPES));
-  const amenityLabels = hotel.amenities.map((a) => labelFor(a, amenityOptions, AMENITIES));
+  const roomTypeLabels = hotel.roomTypes.map((rt) => optionLabel(rt, roomOptions, ROOM_TYPES, lang));
+  const amenityLabels = hotel.amenities.map((a) => optionLabel(a, amenityOptions, AMENITIES, lang));
   const ctaLabel = t("book_now");
   const whatsappHref = `https://wa.me/?text=${encodeURIComponent(t("inquire") + " " + name)}`;
 

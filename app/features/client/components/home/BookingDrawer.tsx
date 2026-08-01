@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { CheckCircle2, Loader2, X } from "lucide-react";
 import { ROOM_TYPES } from "@/lib/constants";
-import { localized } from "@/lib/display";
+import { localized, optionLabel } from "@/lib/display";
 import { BookingFormValues, Hotel, Lang, T } from "@/types";
 
 interface BookingDrawerProps {
@@ -205,10 +205,7 @@ export default function BookingDrawer({ hotel, lang, t, onClose }: BookingDrawer
                     <select className="bir-input" style={inputStyle} value={form.roomType} onChange={(e) => set({ roomType: e.target.value })}>
                       <option value="">{t("room_type_any")}</option>
                       {hotel.roomTypes.map((k) => {
-                        const numeric = Number(k);
-                        const fromApi = roomTypeOptions.find((r) => r.id === numeric);
-                        const fromStatic = ROOM_TYPES.find((r) => r.id === numeric);
-                        const label = fromApi ? (fromApi.name[lang] || fromApi.name.en) : fromStatic ? (fromStatic[lang] || fromStatic.en) : k;
+                        const label = optionLabel(k, roomTypeOptions, ROOM_TYPES, lang);
                         return (
                           <option key={k} value={k}>{label}</option>
                         );

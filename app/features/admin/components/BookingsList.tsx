@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Calendar, CheckCircle2, Phone, Users, XCircle } from "lucide-react";
 import { ROOM_TYPES } from "@/lib/constants";
-import { localized } from "@/lib/display";
+import { localized, optionLabel } from "@/lib/display";
 import { Booking, Lang, T } from "@/types";
 
 interface BookingsListProps {
@@ -69,10 +69,8 @@ export default function BookingsList({ bookings, lang, t, onConfirm, onDecline, 
                   <Phone size={12} /> {b.guestPhone}
                 </span>
                 {b.roomType && (() => {
-                  const numeric = Number(b.roomType);
-                  const fromApi = roomTypeOptions.find((r) => r.id === numeric);
-                  const fromStatic = ROOM_TYPES.find((r) => r.id === numeric);
-                  return <span>{fromApi ? (fromApi.name[lang] || fromApi.name.en) : fromStatic ? (fromStatic[lang] || fromStatic.en) : b.roomType}</span>;
+                  const label = optionLabel(b.roomType, roomTypeOptions, ROOM_TYPES, lang);
+                  return <span>{label}</span>;
                 })()}
               </div>
             </div>
