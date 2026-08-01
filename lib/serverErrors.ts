@@ -57,6 +57,18 @@ const ERRORS: Record<string, ErrorDict> = {
     tr: "Otel bulunamadı",
     ur: "ہوٹل نہیں ملا",
   },
+  "Room type not found": {
+    ar: "نوع الغرفة غير موجود",
+    en: "Room type not found",
+    tr: "Oda tipi bulunamadı",
+    ur: "کمرے کی قسم نہیں ملی",
+  },
+  "Amenity not found": {
+    ar: "وسيلة الراحة غير موجودة",
+    en: "Amenity not found",
+    tr: "Olanak bulunamadı",
+    ur: "سہولت نہیں ملی",
+  },
   "Booking not found": {
     ar: "الحجز غير موجود",
     en: "Booking not found",

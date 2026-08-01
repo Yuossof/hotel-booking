@@ -36,9 +36,9 @@ export function optionLabel(
   const numeric = Number(value);
   if (Number.isInteger(numeric) && numeric > 0) {
     const fromApi = options.find((o) => o.id === numeric);
-    if (fromApi) return fromApi.name[lang] || fromApi.name.en || value;
+    if (fromApi) return fromApi.name[lang] || fromApi.name.ar || fromApi.name.en || value;
     const fromStatic = fallbacks.find((o) => o.id === numeric);
-    if (fromStatic) return fromStatic[lang] || fromStatic.en || value;
+    if (fromStatic) return fromStatic[lang] || fromStatic.ar || fromStatic.en || value;
   }
   return humanizeOptionKey(value);
 }

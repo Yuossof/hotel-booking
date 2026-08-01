@@ -15,6 +15,7 @@ import BookingsList from "../features/admin/components/BookingsList";
 import CitiesList from "../features/admin/components/CitiesList";
 import CityForm from "../features/admin/components/CityForm";
 import ResetDataButton from "../features/admin/components/ResetDataButton";
+import OptionsManager, { OptionItem } from "../features/admin/components/OptionsManager";
 
 const emptyHotelForm = (): HotelFormValues => ({
   nameAr: "", nameEn: "", nameTr: "", nameUr: "",
@@ -101,6 +102,10 @@ export default function AdminDashboardPage() {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [bookingsLoading, setBookingsLoading] = useState(false);
 
+  // Options (room types & amenities)
+  const [roomTypeOptions, setRoomTypeOptions] = useState<OptionItem[]>([]);
+  const [amenityOptions, setAmenityOptions] = useState<OptionItem[]>([]);
+
   const [submitting, setSubmitting] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
 
@@ -170,13 +175,25 @@ export default function AdminDashboardPage() {
     }
   }, []);
 
+  const loadOptions = useCallback(async () => {
+    try {
+      const [rt, am] = await Promise.all([apiFetch("/api/room-types"), apiFetch("/api/amenities")]);
+      setRoomTypeOptions(rt.roomTypes);
+      setAmenityOptions(am.amenities);
+    } catch {
+      setRoomTypeOptions([]);
+      setAmenityOptions([]);
+    }
+  }, []);
+
   useEffect(() => {
     if (isAuthenticated) {
       loadHotels();
       loadCities();
       loadBookings();
+      loadOptions();
     }
-  }, [isAuthenticated, loadHotels, loadCities, loadBookings]);
+  }, [isAuthenticated, loadHotels, loadCities, loadBookings, loadOptions]);
 
   // Auth
   const handleLogin = async (email: string, password: string) => {
@@ -202,6 +219,8 @@ export default function AdminDashboardPage() {
     setHotels([]);
     setCities([]);
     setBookings([]);
+    setRoomTypeOptions([]);
+    setAmenityOptions([]);
     setHotelsLoading(false);
     setCitiesLoading(false);
     setBookingsLoading(false);
@@ -457,6 +476,51 @@ export default function AdminDashboardPage() {
     }
   };
 
+  // Options CRUD
+  const handleAddOption = async (kind: "roomTypes" | "amenities", names: { ar: string; en: string; tr: string; ur: string }) => {
+    try {
+      const payload = { nameAr: names.ar, nameEn: names.en, nameTr: names.tr, nameUr: names.ur };
+      if (kind === "roomTypes") {
+        const data = await apiFetch("/api/room-types", { method: "POST", body: JSON.stringify(payload) });
+        setRoomTypeOptions((prev) => [data.roomType, ...prev]);
+      } else {
+        const data = await apiFetch("/api/amenities", { method: "POST", body: JSON.stringify(payload) });
+        setAmenityOptions((prev) => [data.amenity, ...prev]);
+      }
+    } catch (err) {
+      setApiError((err as Error).message);
+    }
+  };
+
+  const handleUpdateOption = async (kind: "roomTypes" | "amenities", id: number, names: { ar: string; en: string; tr: string; ur: string }) => {
+    try {
+      const payload = { nameAr: names.ar, nameEn: names.en, nameTr: names.tr, nameUr: names.ur };
+      if (kind === "roomTypes") {
+        const data = await apiFetch(`/api/room-types/${id}`, { method: "PUT", body: JSON.stringify(payload) });
+        setRoomTypeOptions((prev) => prev.map((o) => (o.id === id ? data.roomType : o)));
+      } else {
+        const data = await apiFetch(`/api/amenities/${id}`, { method: "PUT", body: JSON.stringify(payload) });
+        setAmenityOptions((prev) => prev.map((o) => (o.id === id ? data.amenity : o)));
+      }
+    } catch (err) {
+      setApiError((err as Error).message);
+    }
+  };
+
+  const handleDeleteOption = async (kind: "roomTypes" | "amenities", id: number) => {
+    try {
+      if (kind === "roomTypes") {
+        await apiFetch(`/api/room-types/${id}`, { method: "DELETE" });
+        setRoomTypeOptions((prev) => prev.filter((o) => o.id !== id));
+      } else {
+        await apiFetch(`/api/amenities/${id}`, { method: "DELETE" });
+        setAmenityOptions((prev) => prev.filter((o) => o.id !== id));
+      }
+    } catch (err) {
+      setApiError((err as Error).message);
+    }
+  };
+
   // Bookings
   const handleConfirmBooking = async (booking: Booking) => {
     try {
@@ -588,7 +652,19 @@ export default function AdminDashboardPage() {
               </>
             )}
 
-            {ownerTab !== "cities" && <ResetDataButton t={t} onConfirmReset={handleResetData} />}
+            {ownerTab === "options" && (
+              <OptionsManager
+                roomTypes={roomTypeOptions}
+                amenities={amenityOptions}
+                lang={lang}
+                t={t}
+                onAdd={handleAddOption}
+                onUpdate={handleUpdateOption}
+                onDelete={handleDeleteOption}
+              />
+            )}
+
+            {ownerTab !== "cities" && ownerTab !== "options" && <ResetDataButton t={t} onConfirmReset={handleResetData} />}
           </>
         )}
       </div>

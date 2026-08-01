@@ -3,7 +3,7 @@
 import { LogOut } from "lucide-react";
 import { T } from "@/types";
 
-export type OwnerTab = "hotels" | "add" | "bookings" | "cities";
+export type OwnerTab = "hotels" | "add" | "bookings" | "cities" | "options";
 
 interface DashboardHeaderProps {
   t: T;
@@ -29,6 +29,7 @@ export default function DashboardHeader({
   const tabs: { key: OwnerTab; label: string }[] = [
     { key: "hotels", label: `${t("tab_my_hotels")} (${hotelCount})` },
     { key: "cities", label: `${t("tab_cities")} (${cityCount})` },
+    { key: "options", label: t("tab_options") },
     { key: "add", label: isEditing ? t("tab_edit_hotel") : t("tab_add_hotel") },
     { key: "bookings", label: `${t("tab_bookings")} (${pendingCount})` },
   ];
